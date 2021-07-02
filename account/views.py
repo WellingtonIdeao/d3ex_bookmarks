@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .forms import LoginForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 
@@ -23,3 +23,8 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('account:login'))
