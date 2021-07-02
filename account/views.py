@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
 
 # function based views
 
@@ -40,3 +41,8 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     template_name = 'account/registration/logged_out.html'
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'account/dashboard.html', {'section': 'dashboard'})
