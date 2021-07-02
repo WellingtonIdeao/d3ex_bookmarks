@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 from django.contrib.auth.decorators import login_required
 
 # function based views
@@ -41,6 +42,15 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     template_name = 'account/registration/logged_out.html'
+
+
+class PasswordChangeView(PasswordChangeView):
+    template_name = 'account/registration/password_change_form.html'
+    success_url = reverse_lazy('account:password_change_done')
+
+
+class PasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'account/registration/password_change_done.html'
 
 
 @login_required
