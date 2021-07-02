@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login, logout
-# Create your views here.
+from django.contrib.auth.views import LoginView, LogoutView
+
+# function based views
 
 
 def user_login(request):
@@ -28,3 +30,13 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('account:login'))
+
+
+# class based views
+
+class LoginView(LoginView):
+    template_name = 'account/registration/login.html'
+
+
+class LogoutView(LogoutView):
+    template_name = 'account/registration/logged_out.html'
