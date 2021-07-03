@@ -24,4 +24,7 @@ DATABASES = {
     'default': env.db(),
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 
