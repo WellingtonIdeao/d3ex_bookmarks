@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-
+from .models import Profile
 
 from django.contrib.auth.decorators import login_required
 
@@ -88,8 +88,23 @@ def register(request):
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password1'])
             new_user.save()
+            Profile.objects.create(user=new_user)
             return render(request, 'account/register_done.html', {'news_user': new_user})
     else:
         form = UserRegistrationForm()
     return render(request, 'account/register.html', {'form': form})
+
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
 

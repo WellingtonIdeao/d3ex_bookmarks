@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import user_login, user_logout, Login, Logout,\
     PasswordChange, PasswordChangeDone, PasswordReset, PasswordResetDone, PasswordResetConfirm,\
-    PasswordResetComplete, dashboard, register
+    PasswordResetComplete, dashboard, register, edit
 
 
 app_name = 'account'
@@ -27,5 +27,7 @@ urlpatterns = [
     path('reset/done/', PasswordResetComplete.as_view(), name='password_reset_complete'),
 
     # register user urls
-    path('register/', register, name='register')
+    path('register/', register, name='register'),
+    # edit user profile url
+    path('edit/', edit, name='edit'),
 ]
