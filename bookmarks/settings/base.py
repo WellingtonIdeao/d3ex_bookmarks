@@ -108,3 +108,7 @@ LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = 'account:dashboard'
 LOGOUT_URL = 'account:logout'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailAuthBackend',
+]
